@@ -26,37 +26,13 @@ int statusLED=2;
 #define LED_OFF 0
 
 int cmd=0;
-int dir1=22;
-int br1=23;
-int pwm1=21;
-
-int dir2=19;
-int br2=18;
-int pwm2=5;
-
-#define forward 0
-#define backward 1
-
-#define brk 1
-#define brk_release 0
 
 unsigned long lastTime = 0;
 unsigned long timerDelay = 500;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(dir1,OUTPUT);
-  pinMode(br1,OUTPUT);
-  pinMode(dir2,OUTPUT);
-  pinMode(br2,OUTPUT);
-  digitalWrite(br1,brk);
-  digitalWrite(br2,brk);
   
-  ledcSetup(0, 50, 10);
-  ledcSetup(1, 50, 10);
-
-  ledcAttachPin(pwm1, 0);
-  ledcAttachPin(pwm2, 1);
   pinMode(statusLED,OUTPUT);
   digitalWrite(statusLED,LED_OFF);
   delay(2000);
@@ -72,44 +48,18 @@ void loop() {
   }
   if(cmd==1) {
     Serial.println("Forward");
-    digitalWrite(br1,brk_release);
-    digitalWrite(br2,brk_release);
-    digitalWrite(dir1,forward);
-    digitalWrite(dir2,forward);
-    ledcWrite(0, 512);
-    ledcWrite(1,512);
     cmd=0;
   } else if(cmd==2) {
     Serial.println("Backward");
-    digitalWrite(br1,brk_release);
-    digitalWrite(br2,brk_release);
-    digitalWrite(dir1,backward);
-    digitalWrite(dir2,backward);
-    ledcWrite(0, 512);
-    ledcWrite(1,512);
     cmd=0;
   } else if(cmd==3) {
     Serial.println("Left");
-    digitalWrite(br1,brk_release);
-    digitalWrite(br2,brk_release);
-    digitalWrite(dir1,forward);
-    digitalWrite(dir2,backward);
-    ledcWrite(0,512);
-    ledcWrite(1,512);
     cmd=0;
   } else if(cmd==4) {
     Serial.println("Right");
-    digitalWrite(br1,brk_release);
-    digitalWrite(br2,brk_release);
-    digitalWrite(dir1,backward);
-    digitalWrite(dir2,forward);
-    ledcWrite(0,512);
-    ledcWrite(1,512);
     cmd=0;
   } else if(cmd==5) {
     Serial.println("Stop");
-    digitalWrite(br1,brk);
-    digitalWrite(br2,brk);
     cmd=0;
   }
 }
